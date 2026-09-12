@@ -45,7 +45,7 @@ export default function CommentList({ newsId, refreshTrigger }) {
   return (
     <div className="comments-list">
       {comments.map((comment) => (
-        <div key={comment.createdAt} className="comment-item">
+        <div key={comment._id || comment.createdAt} className="comment-item">
           <div className="comment-header">
             <strong>{comment.author}</strong>
             <span className="comment-date">{formatDate(comment.createdAt)}</span>
