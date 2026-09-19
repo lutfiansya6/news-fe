@@ -12,10 +12,12 @@ const shortDateFormatter = new Intl.DateTimeFormat("id-ID", {
 });
 
 export function formatDate(iso) {
+  if (!iso) return "";
   return dateFormatter.format(new Date(iso));
 }
 
 export function formatShortDate(iso) {
+  if (!iso) return "";
   return shortDateFormatter.format(new Date(iso));
 }
 
@@ -35,18 +37,33 @@ export const CATEGORY_BY_ID = {
   5: { name: "Politik", slug: "politik" },
 };
 
-export function categoryLabel(category) {
-  // Handle category ID (number)
-  if (typeof category === 'number') {
-    return CATEGORY_BY_ID[category]?.name || category;
-  }
-  // Handle category slug (string)
-  return CATEGORY_LABELS[category] || category;
+export const CATEGORY_NAME_TO_ID = {
+  teknologi: 1,
+  ekonomi: 2,
+  olahraga: 3,
+  hiburan: 4,
+  politik: 5,
+};
+
+export function getCategoryId(cat) {
+  if (typeof cat === "number") return cat;
+  if (!cat) return null;
+  return CATEGORY_NAME_TO_ID[String(cat).toLowerCase()] ?? null;
 }
 
-export function categorySlug(categoryId) {
-  if (typeof categoryId === 'number') {
-    return CATEGORY_BY_ID[categoryId]?.slug || categoryId;
+export function categoryLabel(category) {
+  if (category == null) return "";
+  if (typeof category === "number") {
+    return CATEGORY_BY_ID[category]?.name || String(category);
   }
-  return categoryId;
+  const lower = String(category).toLowerCase();
+  return CATEGORY_LABELS[lower] || category;
+}
+
+export function categorySlug(category) {
+  if (category == null) return "";
+  if (typeof category === "number") {
+    return CATEGORY_BY_ID[category]?.slug || String(category);
+  }
+  return String(category).toLowerCase();
 }

@@ -1,4 +1,4 @@
-﻿const API_BASE = import.meta.env.VITE_API_URL ?? "";
+const API_BASE = import.meta.env.VITE_API_URL ?? "";
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, options);
@@ -14,7 +14,7 @@ async function request(path, options = {}) {
 
 /**
  * Fetch paginated news list.
- * @returns {Promise<{ data: Article[], pagination: { page, limit, total, totalPages } }>}
+ * @returns {Promise<{ data: Array, pagination: { page: number, limit: number, total: number, totalPages: number } }>}
  */
 export function getNewsList(categoryId, page = 1, limit = 10) {
   const params = new URLSearchParams({ page, limit });
@@ -23,11 +23,11 @@ export function getNewsList(categoryId, page = 1, limit = 10) {
 }
 
 export function getNewsById(id) {
-  return request(`/api/news/${id}`).then((r) => r.data);
+  return request(`/api/news/${id}`).then((r) => r.data ?? r);
 }
 
 export function getComments(newsId) {
-  return request(`/api/news/${newsId}/comments`).then((r) => r.data);
+  return request(`/api/news/${newsId}/comments`).then((r) => r.data ?? r);
 }
 
 export function postComment(newsId, comment) {
@@ -37,5 +37,5 @@ export function postComment(newsId, comment) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(comment),
-  }).then((r) => r.data);
+  }).then((r) => r.data ?? r);
 }

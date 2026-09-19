@@ -5,7 +5,7 @@ import NewsCard from "../components/NewsCard";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import { ErrorState, LoadingState } from "../components/Status";
-import { categoryLabel, categorySlug, formatDate } from "../utils/format";
+import { categoryLabel, categorySlug, formatDate, getCategoryId } from "../utils/format";
 
 export default function ArticlePage() {
   const { id } = useParams();
@@ -20,16 +20,29 @@ export default function ArticlePage() {
     setStatus("loading");
     setError("");
 
-    Promise.all([getNewsById(id), getNewsList()])
-      .then(([detail, list]) => {
+    getNewsById(id)
+      .then((detail) => {
         if (cancelled) return;
         setArticle(detail);
-        setRelated(
-          list.filter(
-            (item) => item.category === detail.category && item.id !== detail.id,
-          ),
-        );
         setStatus("ready");
+
+        // Ambil berita terkait secara terpisah agar tidak memblokir render artikel
+        getNewsList()
+          .then((res) => {
+            if (cancelled) return;
+            const list = Array.isArray(res) ? res : (res?.data || []);
+            setRelated(
+              list.filter(
+                (item) =>
+                  detail &&
+                  item.category === detail.category &&
+                  Number(item.id) !== Number(detail.id)
+              )
+            );
+          })
+          .catch((err) => {
+            console.warn("Gagal memuat berita terkait:", err);
+          });
       })
       .catch((err) => {
         if (cancelled) return;
@@ -45,7 +58,7 @@ export default function ArticlePage() {
   const handleCommentSubmit = async (comment) => {
     try {
       await postComment(id, comment);
-      setRefreshTrigger(prev => prev + 1);
+      setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
       setError(err.message);
     }
@@ -66,12 +79,15 @@ export default function ArticlePage() {
     );
   }
 
+  const categoryTarget =
+    article?.categoryId || getCategoryId(article?.category) || article?.category;
+
   return (
     <article className="article-page">
       <p className="breadcrumb">
         <Link to="/">Beranda</Link>
         <span aria-hidden="true"> / </span>
-        <Link to={`/kategori/${article.category}`}>
+        <Link to={`/kategori/${categoryTarget}`}>
           {categoryLabel(article.category)}
         </Link>
       </p>
@@ -80,7 +96,7 @@ export default function ArticlePage() {
       </p>
       <h1>{article.title}</h1>
       <p className="article-meta">
-        {article.author} · {formatDate(article.publishedAt)}
+        {article.author} {" · "} {formatDate(article.publishedAt)}
       </p>
       <figure className="article-hero">
         <img src={article.imageUrl} alt="" />

@@ -16,7 +16,7 @@ export default function NewsCard({ article }) {
         </h3>
         <p className="excerpt">{article.excerpt}</p>
         <p className="meta">
-          {article.author} · {formatShortDate(article.publishedAt)}
+          {article.author} {" · "} {formatShortDate(article.publishedAt)}
         </p>
       </div>
     </article>

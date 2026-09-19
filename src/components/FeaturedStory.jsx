@@ -19,7 +19,7 @@ export default function FeaturedStory({ article }) {
         </h2>
         <p className="excerpt">{article.excerpt}</p>
         <p className="meta">
-          {article.author} · {formatDate(article.publishedAt)}
+          {article.author} {" · "} {formatDate(article.publishedAt)}
         </p>
         <Link className="read-more" to={`/berita/${article.id}`}>
           Baca selengkapnya
