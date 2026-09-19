@@ -5,7 +5,7 @@ import NewsCard from "../components/NewsCard";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import { ErrorState, LoadingState } from "../components/Status";
-import { categoryLabel, formatDate } from "../utils/format";
+import { categoryLabel, categorySlug, formatDate } from "../utils/format";
 
 export default function ArticlePage() {
   const { id } = useParams();
@@ -75,7 +75,7 @@ export default function ArticlePage() {
           {categoryLabel(article.category)}
         </Link>
       </p>
-      <p className={`badge badge-${article.category}`}>
+      <p className={`badge badge-${categorySlug(article.category)}`}>
         {categoryLabel(article.category)}
       </p>
       <h1>{article.title}</h1>
@@ -87,9 +87,7 @@ export default function ArticlePage() {
       </figure>
       <p className="lede">{article.excerpt}</p>
       <div className="article-body">
-        {article.content.split(/(?<=\.)\s+/).map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+        <div dangerouslySetInnerHTML={{ __html: article.content }} />
       </div>
 
       <section className="comments-section">

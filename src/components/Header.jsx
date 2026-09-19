@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 
 const NAV = [
   { to: "/", label: "Beranda", end: true },
-  { to: "/kategori/politik", label: "Politik" },
-  { to: "/kategori/ekonomi", label: "Ekonomi" },
-  { to: "/kategori/teknologi", label: "Teknologi" },
-  { to: "/kategori/olahraga", label: "Olahraga" },
-  { to: "/kategori/hiburan", label: "Hiburan" },
+  { to: "/kategori/5", label: "Politik" },
+  { to: "/kategori/2", label: "Ekonomi" },
+  { to: "/kategori/1", label: "Teknologi" },
+  { to: "/kategori/3", label: "Olahraga" },
+  { to: "/kategori/4", label: "Hiburan" },
 ];
 
 export default function Header() {

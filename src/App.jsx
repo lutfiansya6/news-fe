@@ -10,7 +10,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/kategori/:category" element={<HomePage />} />
+          <Route path="/kategori/:categoryId" element={<HomePage />} />
           <Route path="/berita/:id" element={<ArticlePage />} />
           <Route path="/404" element={<NotFoundPage />} />
           <Route path="*" element={<Navigate to="/404" replace />} />

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { categoryLabel, formatDate } from "../utils/format";
+import { categoryLabel, categorySlug, formatDate } from "../utils/format";
 
 export default function FeaturedStory({ article }) {
   if (!article) return null;
@@ -11,7 +11,7 @@ export default function FeaturedStory({ article }) {
       </Link>
       <div className="featured-body">
         <p className="kicker">Sorotan hari ini</p>
-        <p className={`badge badge-${article.category}`}>
+        <p className={`badge badge-${categorySlug(article.category)}`}>
           {categoryLabel(article.category)}
         </p>
         <h2>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { categoryLabel, formatShortDate } from "../utils/format";
+import { categoryLabel, categorySlug, formatShortDate } from "../utils/format";
 
 export default function NewsCard({ article }) {
   return (
@@ -8,7 +8,7 @@ export default function NewsCard({ article }) {
         <img src={article.imageUrl} alt="" />
       </Link>
       <div className="news-card-body">
-        <p className={`badge badge-${article.category}`}>
+        <p className={`badge badge-${categorySlug(article.category)}`}>
           {categoryLabel(article.category)}
         </p>
         <h3>
